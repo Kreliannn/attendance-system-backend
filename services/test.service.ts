@@ -1,6 +1,10 @@
-import Test from "../model/test.model"
+import TestDB from "../model/test.model"
 
 
-export const getTest = async () => {
-    return await Test.find()
+export class Test {
+  
+  static greet = () => {
+    console.log("hi")
+  }
 }
+
