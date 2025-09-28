@@ -27,7 +27,6 @@ export class AttendanceController {
     try {
       const { id } = request.params;
       const attendace = await Attendance.getById(id);
-      if (!attendace) return response.status(404).json({ error: "attendace not found" });
       response.json(attendace);
     } catch (error) {
       response.status(500).json({ error: "Failed to fetch attendace" });
@@ -39,7 +38,6 @@ export class AttendanceController {
       const { id } = request.params;
       const attendanceData: attendanceInterface = request.body.attendance;
       const updatedAttendance = await Attendance.update(id, attendanceData);
-      if (!updatedAttendance) return response.status(404).json({ error: "attendace not found" });
       response.json(updatedAttendance);
     } catch (error) {
       response.status(500).json({ error: "Failed to update attendace" });
@@ -50,7 +48,6 @@ export class AttendanceController {
     try {
       const { id } = request.params;
       const deletedStudent = await Attendance.delete(id);
-      if (!deletedStudent) return response.status(404).json({ error: "attendace not found" });
       response.json({ message: "attendace deleted successfully" });
     } catch (error) {
       response.status(500).json({ error: "Failed to delete attendace" });

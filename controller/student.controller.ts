@@ -27,7 +27,6 @@ export class StudentController {
     try {
       const { id } = request.params;
       const student = await Student.getById(id);
-      if (!student) return response.status(404).json({ error: "Student not found" });
       response.json(student);
     } catch (error) {
       response.status(500).json({ error: "Failed to fetch student" });
@@ -38,8 +37,7 @@ export class StudentController {
     try {
       const { id } = request.params;
       const studentData: studentInterface = request.body.student;
-      const updatedStudent = await Student.update(id, studentData);
-      if (!updatedStudent) return response.status(404).json({ error: "Student not found" });
+      const updatedStudent = await Student.update(id, studentData);  
       response.json(updatedStudent);
     } catch (error) {
       response.status(500).json({ error: "Failed to update student" });
@@ -49,8 +47,7 @@ export class StudentController {
   static deleteController = async (request: Request, response: Response) => {
     try {
       const { id } = request.params;
-      const deletedStudent = await Student.delete(id);
-      if (!deletedStudent) return response.status(404).json({ error: "Student not found" });
+      await Student.delete(id);
       response.json({ message: "Student deleted successfully" });
     } catch (error) {
       response.status(500).json({ error: "Failed to delete student" });
