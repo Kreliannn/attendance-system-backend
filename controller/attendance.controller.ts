@@ -6,7 +6,12 @@ export class AttendanceController {
  
   static createController = async (request: Request, response: Response) => {
     try {
-      const attendance: insertAttendanceInterface = request.body.attendance;
+      const attendance: insertAttendanceInterface = request.body;
+      
+      const findAttendance = await Attendance.checkIfExist(attendance.student, attendance.date)
+
+      if(findAttendance) await Attendance.delete(findAttendance._id.toString())
+
       const newAttendance = await Attendance.create(attendance);
       response.status(201).json(newAttendance);
     } catch (error) {
@@ -36,7 +41,7 @@ export class AttendanceController {
   static updateController = async (request: Request, response: Response) => {
     try {
       const { id } = request.params;
-      const attendanceData: attendanceInterface = request.body.attendance;
+      const attendanceData: attendanceInterface = request.body;
       const updatedAttendance = await Attendance.update(id, attendanceData);
       response.json(updatedAttendance);
     } catch (error) {
@@ -52,5 +57,11 @@ export class AttendanceController {
     } catch (error) {
       response.status(500).json({ error: "Failed to delete attendace" });
     }
+  };
+
+
+  static getTodayController = async (request: Request, response: Response) => {
+    const attendance = await Attendance.getToday();
+    response.json(attendance);
   };
 }
