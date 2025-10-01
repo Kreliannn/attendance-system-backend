@@ -6,13 +6,19 @@ export class AttendanceController {
  
   static createController = async (request: Request, response: Response) => {
     try {
-      const attendance: insertAttendanceInterface = request.body;
+      const attendance: insertAttendanceInterface = request.body.attendance;
+      const sendSms : boolean = request.body.sendSms;
       
       const findAttendance = await Attendance.checkIfExist(attendance.student, attendance.date)
 
       if(findAttendance) await Attendance.delete(findAttendance._id.toString())
 
       const newAttendance = await Attendance.create(attendance);
+
+      if(sendSms){
+        console.log("sms sent")
+      }
+
       response.status(201).json(newAttendance);
     } catch (error) {
       response.status(500).json({ error: "Failed to create attendace" });

@@ -23,5 +23,9 @@ export class Teacher {
     return await TeacherDB.findByIdAndDelete(id);
   }
 
+  static async login(username : string, password : string) {
+    return await TeacherDB.findOne({username, password });
+  }
+
 
 }
