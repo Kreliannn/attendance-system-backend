@@ -1,6 +1,9 @@
 import { Response, Request } from "express";
 import { Attendance } from "../services/attendance.service";
 import { attendanceInterface, insertAttendanceInterface } from "../types/attendance.type";
+import { SmsMessage } from "../services/smsMessage.service";
+import { Teacher } from "../services/teacher.service";
+import { Student } from "../services/student.service";
 
 export class AttendanceController {
  
@@ -16,7 +19,24 @@ export class AttendanceController {
       const newAttendance = await Attendance.create(attendance);
 
       if(sendSms){
-        console.log("sms sent")
+        const teacherId : string = request.body.teacher
+        const teacher = await Teacher.getById(teacherId)
+        const student = await Student.getById(attendance.student)
+
+        if(teacher && student){
+
+            const messageTemplate = teacher.smsMessage 
+
+            const messageWithStudentName = messageTemplate.replace("[STUDENT_NAME]", student.name);
+
+            await SmsMessage.create({
+              date : attendance.date,
+              message :messageWithStudentName,
+              student : attendance.student
+            })
+            
+        } 
+
       }
 
       response.status(201).json(newAttendance);
