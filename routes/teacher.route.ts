@@ -5,6 +5,8 @@ const route = Router();
 
 route.post("/", TeacherController.createController);
 route.post("/login", TeacherController.loginController);
+route.post("/password", TeacherController.forgotPasswordController);
+route.put("/password", TeacherController.UpdatePasswordController);
 route.get("/", TeacherController.getAllController);
 route.get("/dashboard", TeacherController.getDashboardDataController);
 route.get("/:id", TeacherController.getByIdController);

@@ -6,6 +6,7 @@ const teacherSchema = new Schema({
     username: { type: String, required: true },
     password: { type: String, required: true },
     smsMessage : { type: String, required: true },
+    pin :  { type: String, required: true },
 });
 
 export default mongoose.model('teachers', teacherSchema)

@@ -27,5 +27,16 @@ export class Teacher {
     return await TeacherDB.findOne({username, password });
   }
 
+  static async getByEmail(email : string) {
+    return await TeacherDB.findOne({email});
+  }
+
+  static async updatePin(id : string, pin : string) {
+    return await TeacherDB.findByIdAndUpdate(id, { pin } , { new: true });
+  }
+
+  static async updatePassword(id : string, password : string) {
+    return await TeacherDB.findByIdAndUpdate(id, { password } , { new: true });
+  }
 
 }

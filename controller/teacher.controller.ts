@@ -4,7 +4,7 @@ import { teacherInterface, insertTeacherInterface } from "../types/teacher.type"
 import { getChartData , getPiechartData} from "../utils/customFunc";
 import { Attendance } from "../services/attendance.service";
 import { Student } from "../services/student.service";
-
+import nodemailer from "nodemailer"
 
 export class TeacherController {
  
@@ -78,6 +78,89 @@ export class TeacherController {
       response.status(500).json({ error: "Failed to fetch teacher" });
     }
   };
+
+  static forgotPasswordController = async (request: Request, response: Response) => {
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail', // Using Gmail's SMTP service
+        auth: {
+          user: 'krelianquimson@gmail.com',
+          pass: 'rjbs zeby bdhk lwri',
+        },
+    });
+
+    try {
+      const { email } = request.body;
+      const teacher = await Teacher.getByEmail(email);
+
+      if(!teacher){
+        response.status(500).json({ error: "teacher to found" });
+        return
+      }
+
+      const pin = Math.floor(1000 + Math.random() * 9000);
+
+      const mailOptions = {
+        from: '"Sto. Tomas National High School" <no-reply@stotomasnhs.com>',
+        to: email,
+        subject: 'Verification Code',
+        text: `Your verification PIN is ${pin}.`,
+        html: `
+          <div style="font-family: Arial, sans-serif; text-align:center; color:#111;">
+            <h2>Verification Code</h2>
+            <p>Use the PIN below to continue:</p>
+            <div style="font-size:28px; font-weight:bold; letter-spacing:6px; margin:20px 0; color:#2563eb;">
+              ${pin}
+            </div>
+            <p style="color:#666; font-size:12px;">If you didn’t request this, ignore this email.</p>
+          </div>
+        `
+      };
+
+
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log('Error:', error);
+          } else {
+            console.log('Email sent:', info.response);
+          }
+      });
+
+      await Teacher.updatePin(teacher._id.toString() , pin.toString())
+
+      response.send({
+        email : email,
+        pin : pin
+      })
+      
+    } catch (error) {
+      response.status(500).json({ error: "Failed to send varification" });
+    }
+  };
+
+
+
+
+  static UpdatePasswordController = async (request: Request, response: Response) => {
+    try {
+      const { email, password } = request.body;
+      const teacher = await Teacher.getByEmail(email);
+
+      if(!teacher){
+        response.status(500).json({ error: "teacher to found" });
+        return
+      }
+
+      await Teacher.updatePassword(teacher._id.toString(), password)
+      await Teacher.updatePin(teacher._id.toString(), "")
+
+      response.send("success")
+      
+    } catch (error) {
+      response.status(500).json({ error: "Failed to send varification" });
+    }
+  };
+
 
 
   static getDashboardDataController = async (request: Request, response: Response) => {
