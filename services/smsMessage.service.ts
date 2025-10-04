@@ -28,4 +28,9 @@ export class SmsMessage {
     const today = date.toISOString().split("T")[0]; 
     return await SmsMessageDB.find({ date : today }).populate("student");
   }
+
+  
+  static async deleteMany(student : string) {
+    return await SmsMessageDB.deleteMany({student});
+  }
 }

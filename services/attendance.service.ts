@@ -33,4 +33,12 @@ export class Attendance {
     const today = date.toISOString().split("T")[0]; 
     return await AttendanceDB.find({ date : today }).populate("student");
   }
+
+  static async deleteMany(student : string) {
+    return await AttendanceDB.deleteMany({student});
+  }
+
+  static async deleteAll() {
+    return await AttendanceDB.deleteMany();
+  }
 }

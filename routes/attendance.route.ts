@@ -8,6 +8,7 @@ route.get("/", AttendanceController.getAllController);
 route.get("/today", AttendanceController.getTodayController);
 route.get("/:id", AttendanceController.getByIdController);
 route.put("/:id", AttendanceController.updateController);
+route.delete("/clear", AttendanceController.deleteAllController);
 route.delete("/:id", AttendanceController.deleteController);
 
 

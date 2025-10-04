@@ -90,4 +90,13 @@ export class AttendanceController {
     const attendance = await Attendance.getToday();
     response.json(attendance);
   };
+
+  static deleteAllController = async (request: Request, response: Response) => {
+    try {
+      await Attendance.deleteAll()
+      response.json({ message: "attendace deleted successfully" });
+    } catch (error) {
+      response.status(500).json({ error: "Failed to delete attendace" });
+    }
+  };
 }

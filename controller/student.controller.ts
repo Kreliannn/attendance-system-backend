@@ -1,6 +1,8 @@
 import { Response, Request } from "express";
 import { Student } from "../services/student.service";
 import { insertStudentInterface, studentInterface } from "../types/student.type";
+import { SmsMessage } from "../services/smsMessage.service";
+import { Attendance } from "../services/attendance.service";
 
 export class StudentController {
  
@@ -48,9 +50,14 @@ export class StudentController {
     try {
       const { id } = request.params;
       await Student.delete(id);
+      await SmsMessage.deleteMany(id)
+      await Attendance.deleteMany(id)
       response.json({ message: "Student deleted successfully" });
     } catch (error) {
       response.status(500).json({ error: "Failed to delete student" });
     }
   };
+
+
+  
 }
