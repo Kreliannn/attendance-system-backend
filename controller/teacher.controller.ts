@@ -12,12 +12,15 @@ export class TeacherController {
     try {
       const teacher: insertTeacherInterface = request.body;
 
+
+      /*
+
       const checkIfExist = await Teacher.getAll()
 
       if(checkIfExist.length != 0){
         response.status(500).json({ error: "account exist" });
         return
-      }
+      } */
 
       const newTeacher = await Teacher.create(teacher);
       response.status(201).json(newTeacher);
