@@ -101,7 +101,7 @@ export class TeacherController {
       const pin = Math.floor(1000 + Math.random() * 9000);
 
       const mailOptions = {
-        from: '"Sto. Tomas National High School" <no-reply@stotomasnhs.com>',
+        from: '"defemnhs" <no-reply@defemnhs.com>',
         to: email,
         subject: 'Verification Code',
         text: `Your verification PIN is ${pin}.`,
