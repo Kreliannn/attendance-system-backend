@@ -22,6 +22,7 @@ export class TeacherController {
       const newTeacher = await Teacher.create(teacher);
       response.status(201).json(newTeacher);
     } catch (error) {
+      console.log(error)
       response.status(500).json({ error: "Failed to create Teacher" });
     }
   };
